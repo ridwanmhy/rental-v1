@@ -1,32 +1,17 @@
-import { useState } from "react";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap"
+import React, { useState, useEffect } from 'react';
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { useNavigate } from "react-router";
 
 function NavHeader() {
-    const [isActiveLinkHome, setIsActiveLinkHome] = useState("home");
+    const [nav, setNav] = useState('home');
 
-    const styleKata = {
-        color: "white"
-    }
+    useEffect(() => {
+        // You can add any side effects here if needed
+        // For example, you might want to log the current nav state
+        console.log(`Current active nav: ${nav}`);
+    }, [nav]); // Dependency array includes 'nav' to run effect when 'nav' changes
 
-    const getLinkClassName = (link) => {
-        let customClassname: string = "";
-        // if (isActive) {
-        //     customClassname = "text-white"; 
-        // } else {
-        //     customClassname = "text-primary"
-        // }
-        return customClassname;
-    }
-    const styleItemNavlink = {
-        textDecorationLine: "none", 
-        color: "whitesmoke"
-    }
-
-    function test() {
-        setIsActive(true);
-        console.log(isActive);
-        
-    }
+    let navigate = useNavigate();
 
     return (
         <>
@@ -35,38 +20,40 @@ function NavHeader() {
                     <Navbar.Brand>Logo</Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
-                        <Nav
-                            style={{ maxHeight: '100px' }}  
-                            navbarScroll
-                        ></Nav>
                         <Nav className="me-auto">
-                            <Nav.Link href="/home" className="active"> Home
-                                {/* <NavLink
-                                to="/home" 
-                                className={customStyle()}
-                                className={({isActive}) => isActive ? "active": "inactive"}
-                                className="active"
-                                onClick={test}
-                                >
-                                    Home
-                                </NavLink> */}
+                            <Nav.Link 
+                                className={nav === 'home' ? 'active' : ''} 
+                                onClick={(e) => {
+                                    setNav('home');
+                                    navigate("/home");
+                                }}
+                            >
+                                Home
                             </Nav.Link>
-                            <Nav.Link href="/transaksi" className="">Transaksi</Nav.Link>
+                            <Nav.Link 
+                                className={nav === 'transaksi' ? 'active' : ''} 
+                                onClick={(e) => {
+                                    setNav('transaksi');
+                                    navigate("/transaksi");
+                                }}
+                            >
+                                Transaksi
+                            </Nav.Link>
                             <Nav.Link href="#aset">Aset</Nav.Link>
                             <Nav.Link href="#pembayaran">Pembayaran</Nav.Link>
                         </Nav>
                         <Nav className="mx-5">    
-                            <NavDropdown style={styleKata} title="Hadi" id="navbarScrollingDropdown">
-                                <NavDropdown.Item className="success" href="#action3">pengaturan</NavDropdown.Item>
-                                <NavDropdown.Divider></NavDropdown.Divider>
-                                <NavDropdown.Item href="#action3">logout</NavDropdown.Item>
+                            <NavDropdown title="Hadi" id="navbarScrollingDropdown">
+                                <NavDropdown.Item className="success" href="#action3">Pengaturan</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="#action3">Logout</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
         </>
-    )
+    );
 }
 
-export default NavHeader
+export default NavHeader;
